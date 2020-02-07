@@ -26,6 +26,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectId" id="1WdoPvjr9fpfnEzadM8lf0W22zp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -145,11 +146,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.inference" />
-      <item itemvalue="Python.model" />
       <item itemvalue="Python.dataset" />
-      <item itemvalue="Python.loss" />
+      <item itemvalue="Python.inference" />
       <item itemvalue="Python.loss2" />
+      <item itemvalue="Python.loss" />
+      <item itemvalue="Python.model" />
     </list>
     <recent_temporary>
       <list>
@@ -218,10 +219,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="215" y="53" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1580830748557" />
-    <state x="612" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1581021978534">
+    <state x="612" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1581048308524">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="612" y="225" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1581021978534" />
+    <state x="612" y="225" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1581048308524" />
     <state x="688" y="58" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1581010694976">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
