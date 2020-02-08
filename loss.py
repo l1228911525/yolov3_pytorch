@@ -1,50 +1,9 @@
 import torch
 import numpy as np
-import utils.utils_cv_pytorch as utils
+import utils.utils_cv_pytorch as pytorch_utils
 import torch.nn as nn
 import math
 from config import device
-
-def PComputeIOU(Pinput, Poutput, xyxy=True):
-    if not xyxy:
-        x1 = Pinput[...,0] - Pinput[..., 2] / 2
-        y1 = Pinput[...,1] - Pinput[..., 3] / 2
-        x2 = Pinput[...,0] + Pinput[..., 2] / 2
-        y2 = Pinput[...,1] + Pinput[..., 3] / 2
-        Pinput[..., 0] = x1
-        Pinput[..., 1] = y1
-        Pinput[..., 2] = x2
-        Pinput[..., 3] = y2
-
-        x1 = Poutput[..., 0] - Poutput[..., 2] / 2
-        y1 = Poutput[..., 1] - Poutput[..., 3] / 2
-        x2 = Poutput[..., 0] + Poutput[..., 2] / 2
-        y2 = Poutput[..., 1] + Poutput[..., 3] / 2
-        Poutput[..., 0] = x1
-        Poutput[..., 1] = y1
-        Poutput[..., 2] = x2
-        Poutput[..., 3] = y2
-
-    Pinput = Pinput.float()
-    Poutput = Poutput.float()
-    ious = torch.zeros(size=(Pinput.size(0), Poutput.size(0)), dtype=torch.float32).to(device)
-    for i in range(Pinput.size(0)):
-        Pone = Pinput[i]
-        Pone = Pone.repeat(Poutput.size(0), 1)
-        b1_x1, b1_y1, b1_x2, b1_y2 = Pone[:, 0], Pone[:, 1], Pone[:, 2], Pone[:, 3]
-        b2_x1, b2_y1, b2_x2, b2_y2 = Poutput[:, 0], Poutput[:, 1], Poutput[:, 2], Poutput[:, 3]
-        inter_rect_x1 = torch.max(b1_x1, b2_x1)
-        inter_rect_y1 = torch.max(b1_y1, b2_y1)
-        inter_rect_x2 = torch.min(b1_x2, b2_x2)
-        inter_rect_y2 = torch.min(b1_y2, b2_y2)
-
-        inter_area = torch.clamp(inter_rect_x2 - inter_rect_x1, min=0) * torch.clamp(inter_rect_y2 - inter_rect_y1, min=0)
-
-        b1_area = (b1_x2 - b1_x1)*(b1_y2 - b1_y1)
-        b2_area = (b2_x2 - b2_x1)*(b2_y2 - b2_y1)
-        iou = inter_area / (b1_area + b2_area - inter_area + 1e-16).unsqueeze(0)
-        ious[i] = iou
-    return ious
 
 def build_target(Ptarget, Panchors, PanchorNum, PclassNum, PgridSize, Pstride, PignoreTh = 0.3):
     nB = len(Ptarget)
@@ -74,7 +33,7 @@ def build_target(Ptarget, Panchors, PanchorNum, PclassNum, PgridSize, Pstride, P
 
             gt_box = torch.tensor(np.array([0, 0, gw, gh], dtype=np.float32), dtype=torch.float32).unsqueeze(0).to(device)
             anchor_shapes = torch.tensor(np.concatenate((np.zeros((len(Panchors), 2)), np.array(Panchors)), 1), dtype=torch.float32).to(device)
-            Piou = PComputeIOU(gt_box, anchor_shapes).squeeze(dim=0)
+            Piou = pytorch_utils.PComputeIOU(gt_box, anchor_shapes).squeeze(dim=0)
             Piou[int(torch.argmax(Piou))] = 1
             PanchorMask = (Piou > PignoreTh)
             for i in range(PanchorMask.shape[0]):
@@ -133,7 +92,7 @@ def PLayerLoss(p, Ptarget, Panchors, Pstrides, PclassNum):
             loss += loss_conf
     return loss
 
-# anchors = [[416,416],  [16,30],  [33,23],  [30,61],  [62,45],  [59,119],  [116,90],  [156,198],  [373,326]]
-# target = [[[0, 0.5, 0.5, 0.5, 0.5]]]
-# target = torch.tensor(target, dtype=torch.float32).to(device)
-# build_target(target, anchors, 9, 80, [52, 26, 13] ,[8, 16, 32])
+anchors = [[416,416],  [16,30],  [33,23],  [30,61],  [62,45],  [59,119],  [116,90],  [156,198],  [373,326]]
+target = [[[0, 0.5, 0.5, 0.5, 0.5]]]
+target = torch.tensor(target, dtype=torch.float32).to(device)
+build_target(target, anchors, 9, 80, [52, 26, 13] ,[8, 16, 32])

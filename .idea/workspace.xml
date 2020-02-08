@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="772bcf00-400a-4072-93fd-47b55e5230a7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/inference.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/loss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +43,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Unet_pytorch-master" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.model">
+  <component name="RunManager" selected="Python.loss">
     <configuration name="inference" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="yolov3-myself" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -162,8 +160,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.model" />
         <item itemvalue="Python.loss" />
+        <item itemvalue="Python.model" />
         <item itemvalue="Python.inference" />
         <item itemvalue="Python.loss2" />
         <item itemvalue="Python.loss_origin" />
@@ -191,22 +189,22 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="534" y="231" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1600.860@0.0.1600.860" timestamp="1580830661865" />
-    <state width="1578" height="219" key="GridCell.Tab.0.bottom" timestamp="1581093336571">
+    <state width="1578" height="218" key="GridCell.Tab.0.bottom" timestamp="1581128910823">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1578" height="219" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1581093336571" />
-    <state width="1578" height="219" key="GridCell.Tab.0.center" timestamp="1581093336570">
+    <state width="1578" height="218" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1581128910823" />
+    <state width="1578" height="218" key="GridCell.Tab.0.center" timestamp="1581128910823">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1578" height="219" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1581093336570" />
-    <state width="1578" height="219" key="GridCell.Tab.0.left" timestamp="1581093336570">
+    <state width="1578" height="218" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1581128910823" />
+    <state width="1578" height="218" key="GridCell.Tab.0.left" timestamp="1581128910822">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1578" height="219" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1581093336570" />
-    <state width="1578" height="219" key="GridCell.Tab.0.right" timestamp="1581093336571">
+    <state width="1578" height="218" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1581128910822" />
+    <state width="1578" height="218" key="GridCell.Tab.0.right" timestamp="1581128910823">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1578" height="219" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1581093336571" />
+    <state width="1578" height="218" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1581128910823" />
     <state width="1578" height="270" key="GridCell.Tab.1.bottom" timestamp="1581016941905">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -227,10 +225,10 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="215" y="53" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1580830748557" />
-    <state x="612" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1581128067605">
+    <state x="612" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1581128812708">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="612" y="225" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1581128067605" />
+    <state x="612" y="225" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1581128812708" />
     <state x="688" y="58" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1581010694976">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
