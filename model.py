@@ -201,8 +201,8 @@ anchors = [[10,13],  [16,30],  [33,23],  [30,61],  [62,45],  [59,119],  [116,90]
 
 data = dataset.dataset("./data/label/", (160, 160))
 
-# model = YOLOV3(PclassNum=1)
-model = torch.load("./yolov3.pkl")
+model = YOLOV3(PclassNum=2)
+# model = torch.load("./yolov3.pkl")
 model = model.to(device)
 # inputs = torch.from_numpy(img).to(device)
 opt_SGD = torch.optim.Adam(model.parameters(),lr=0.0001)
@@ -225,7 +225,7 @@ for i in range(200005):
     opt_SGD.zero_grad()
     p13, p26, p52 = model(inputs)
     p = [p52, p26, p13]
-    loss = PLayerLoss(p, target, anchors, Pstrides=[8, 16, 32], PclassNum=1)
+    loss = PLayerLoss(p, target, anchors, Pstrides=[8, 16, 32], PclassNum=2)
     # loss13 = PLayerLoss(p13, target, anchors[6:9], 32, 1)
     # loss26 = PLayerLoss(p26, target, anchors[3:6], 16, 1)
     # loss52 = PLayerLoss(p52, target, anchors[0:3], 8, 1)

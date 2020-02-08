@@ -64,10 +64,10 @@ resizeOut[..., 2] = out[..., 2] - out[..., 4] / 2
 resizeOut[..., 3] = out[..., 1] + out[..., 3] / 2
 resizeOut[..., 4] = out[..., 2] + out[..., 4] / 2
 
-for i in range(resizeOut.shape[0]):
-    imgCopy = cv2.rectangle(imgCopy, (resizeOut[i][1], resizeOut[i][2]), (resizeOut[i][3], resizeOut[i][4]), (255, 0, 0), 2)
-# imgCopy = cv2.rectangle(imgCopy, (resizeOut[1][1], resizeOut[1][2]), (resizeOut[1][3], resizeOut[1][4]), (255, 0, 0), 2)
-# imgCopy = cv2.rectangle(imgCopy, (resizeOut[2][1], resizeOut[2][2]), (resizeOut[2][3], resizeOut[2][4]), (255, 0, 0), 2)
+# for i in range(resizeOut.shape[0]):
+imgCopy = cv2.rectangle(imgCopy, (resizeOut[0][1], resizeOut[0][2]), (resizeOut[0][3], resizeOut[0][4]), (255, 0, 0), 2)
+imgCopy = cv2.rectangle(imgCopy, (resizeOut[1][1], resizeOut[1][2]), (resizeOut[1][3], resizeOut[1][4]), (255, 0, 0), 2)
+imgCopy = cv2.rectangle(imgCopy, (resizeOut[2][1], resizeOut[2][2]), (resizeOut[2][3], resizeOut[2][4]), (255, 0, 0), 2)
 
 
 cv2.imshow("imgCopy", imgCopy)

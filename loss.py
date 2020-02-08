@@ -51,12 +51,12 @@ def build_target(Ptarget, Panchors, PanchorNum, PclassNum, PgridSize, Pstride, P
     nA = int(PanchorNum / 3)
     nC = PclassNum
     nG = PgridSize
-    tx = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32).to(device) for ng in nG]
-    ty = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32).to(device) for ng in nG]
-    tw = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32).to(device) for ng in nG]
-    th = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32).to(device) for ng in nG]
-    tconf = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32).to(device) for ng in nG]
-    tcls = [torch.zeros(size=(nB, nA, ng, ng, nC), dtype=torch.float32).to(device) for ng in nG]
+    tx = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32, requires_grad=False).to(device) for ng in nG]
+    ty = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32, requires_grad=False).to(device) for ng in nG]
+    tw = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32, requires_grad=False).to(device) for ng in nG]
+    th = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32, requires_grad=False).to(device) for ng in nG]
+    tconf = [torch.zeros(size=(nB, nA, ng, ng), dtype=torch.float32, requires_grad=False).to(device) for ng in nG]
+    tcls = [torch.zeros(size=(nB, nA, ng, ng, nC), dtype=torch.float32, requires_grad=False).to(device) for ng in nG]
     clsmask = [0, 0, 0]
 
     for b in range(nB):
@@ -71,6 +71,7 @@ def build_target(Ptarget, Panchors, PanchorNum, PclassNum, PgridSize, Pstride, P
             gi = [int(gx / stride) for stride in Pstride]
             gj = [int(gy / stride) for stride in Pstride]
 
+
             gt_box = torch.tensor(np.array([0, 0, gw, gh], dtype=np.float32), dtype=torch.float32).unsqueeze(0).to(device)
             anchor_shapes = torch.tensor(np.concatenate((np.zeros((len(Panchors), 2)), np.array(Panchors)), 1), dtype=torch.float32).to(device)
             Piou = PComputeIOU(gt_box, anchor_shapes).squeeze(dim=0)
@@ -78,11 +79,15 @@ def build_target(Ptarget, Panchors, PanchorNum, PclassNum, PgridSize, Pstride, P
             PanchorMask = (Piou > PignoreTh)
             for i in range(PanchorMask.shape[0]):
                 if PanchorMask[i]:
+
+                    # print("wratios:", math.log(gw / Panchors[i][0]))
+                    # print("hratios:", math.log(gh / Panchors[i][1]))
+
                     tconf[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = 1
                     tx[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = gx / Pstride[int(i / 3)] - gi[int(i / 3)]
                     ty[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = gy / Pstride[int(i / 3)] - gj[int(i / 3)]
-                    tw[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = math.log(gw / Panchors[int(i / 3)][0] + 1e-16)
-                    th[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = math.log(gh / Panchors[int(i / 3)][1] + 1e-16)
+                    tw[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = math.log(gw / Panchors[i][0] + 1e-16)
+                    th[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)]] = math.log(gh / Panchors[i][1] + 1e-16)
                     PtargetLabel = int(Ptarget[b][t, 0])
                     tcls[int(i / 3)][b, i%3, gj[int(i / 3)], gi[int(i / 3)], PtargetLabel] = 1
                     clsmask[int(i / 3)] = 1
@@ -91,7 +96,7 @@ def build_target(Ptarget, Panchors, PanchorNum, PclassNum, PgridSize, Pstride, P
 
 
 def PLayerLoss(p, Ptarget, Panchors, Pstrides, PclassNum):
-    PsmoothL1 = nn.SmoothL1Loss(reduction='mean')
+    PL1 = nn.L1Loss(reduction='mean')
     PbceLoss = nn.BCELoss(reduction='mean')
     PceLoss = nn.CrossEntropyLoss()
 
@@ -110,22 +115,21 @@ def PLayerLoss(p, Ptarget, Panchors, Pstrides, PclassNum):
     loss = 0
     for i in range(3):
         if clsmask[i]:
-            loss_x = PsmoothL1(x[i][conf_mask_true[i]], tx[i][conf_mask_true[i]])
+            loss_x = PL1(x[i][conf_mask_true[i]], tx[i][conf_mask_true[i]])
             # print("loss_x:", loss_x)
-            loss_y = PsmoothL1(y[i][conf_mask_true[i]], ty[i][conf_mask_true[i]])
-            loss_w = PsmoothL1(w[i][conf_mask_true[i]], tw[i][conf_mask_true[i]])
-            loss_h = PsmoothL1(h[i][conf_mask_true[i]], th[i][conf_mask_true[i]])
+            loss_y = PL1(y[i][conf_mask_true[i]], ty[i][conf_mask_true[i]])
+            loss_w = PL1(w[i][conf_mask_true[i]], tw[i][conf_mask_true[i]])
+            loss_h = PL1(h[i][conf_mask_true[i]], th[i][conf_mask_true[i]])
 
             tconf = [tt.float() for tt in tconf]
 
             loss_conf = PbceLoss(pred_conf[i][conf_mask_true[i]], tconf[i][conf_mask_true[i]]) + PbceLoss(
                 pred_conf[i][conf_mask_false[i]], tconf[i][conf_mask_false[i]])
-            loss_cls = (1 / len(Ptarget)) * PceLoss(pred_cls[i][conf_mask_true[i]], torch.argmax(tcls[i][conf_mask_true[i]], 1))
+            loss_cls = (1 / len(Ptarget)) * PbceLoss(pred_cls[i][conf_mask_true[i]], tcls[i][conf_mask_true[i]])
 
             loss += (loss_x + loss_y + loss_w + loss_h + loss_conf + loss_cls)
         else:
-            loss_conf = PbceLoss(pred_conf[i][conf_mask_true[i]], tconf[i][conf_mask_true[i]]) + PbceLoss(
-                pred_conf[i][conf_mask_false[i]], tconf[i][conf_mask_false[i]])
+            loss_conf = PbceLoss(pred_conf[i][conf_mask_false[i]], tconf[i][conf_mask_false[i]])
             loss += loss_conf
     return loss
 
