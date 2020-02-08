@@ -92,7 +92,7 @@ def PLayerLoss(p, Ptarget, Panchors, Pstrides, PclassNum):
             loss += loss_conf
     return loss
 
-anchors = [[416,416],  [16,30],  [33,23],  [30,61],  [62,45],  [59,119],  [116,90],  [156,198],  [373,326]]
-target = [[[0, 0.5, 0.5, 0.5, 0.5]]]
-target = torch.tensor(target, dtype=torch.float32).to(device)
-build_target(target, anchors, 9, 80, [52, 26, 13] ,[8, 16, 32])
+# anchors = [[416,416],  [16,30],  [33,23],  [30,61],  [62,45],  [59,119],  [116,90],  [156,198],  [373,326]]
+# target = [[[0, 0.5, 0.5, 0.5, 0.5]]]
+# target = torch.tensor(target, dtype=torch.float32).to(device)
+# build_target(target, anchors, 9, 80, [52, 26, 13] ,[8, 16, 32])
